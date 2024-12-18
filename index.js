@@ -1,3 +1,6 @@
+/* Working on different questions for low-level JS for problem-solving */
+/** */
+
 function snail(array) {
     const result = [];
     while (array.length) {
@@ -30,3 +33,125 @@ function snail(array) {
   ];
   console.log(snail(array)); // Output: [1, 2, 3, 6, 9, 8, 7, 4, 5]
   
+////////////////////////////////////////////////////////
+ 
+
+/*Question 2 of Exercise  */
+function Dictionary(words) {
+    this.words = words; // Initialize the dictionary with the words
+  }
+  
+  // Utility function to calculate the "edit distance" between two strings
+  function getEditDistance(word1, word2) {
+    const dp = Array(word1.length + 1)
+      .fill(null)
+      .map(() => Array(word2.length + 1).fill(0));
+  
+    for (let i = 0; i <= word1.length; i++) dp[i][0] = i;
+    for (let j = 0; j <= word2.length; j++) dp[0][j] = j;
+  
+    for (let i = 1; i <= word1.length; i++) {
+      for (let j = 1; j <= word2.length; j++) {
+        const cost = word1[i - 1] === word2[j - 1] ? 0 : 1;
+        dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
+      }
+    }
+  
+    return dp[word1.length][word2.length];
+  }
+  
+  Dictionary.prototype.findMostSimilar = function (term) {
+    if (!term || typeof term !== 'string') {
+      throw new Error('Please enter a valid input string.');
+    }
+  
+    let mostSimilarWord = null;
+    let smallestDistance = Infinity;
+  
+    for (const word of this.words) {
+      const distance = getEditDistance(term, word);
+      if (distance < smallestDistance) {
+        smallestDistance = distance;
+        mostSimilarWord = word;
+      }
+    }
+  
+    return mostSimilarWord;
+  };
+  
+  // Example Usage:
+  const dictionary = new Dictionary(['cherry', 'pineapple', 'melon', 'strawberry', 'raspberry']);
+  console.log(dictionary.findMostSimilar('strawbery')); // Output: 'strawberry'
+  console.log(dictionary.findMostSimilar(''));     // Output: 'cherry'
+  
+  /*Class Example for JS */
+
+  class Fetcher {
+    constructor(baseURL) {
+      this.baseURL = baseURL;
+    }
+  
+    async fetchData(endpoint) {
+      try {
+        const response = await fetch(`${this.baseURL}${endpoint}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+  }
+  
+  // Example usage:
+  const apiFetcher = new Fetcher('https://api.example.com');
+  apiFetcher.fetchData('/users').then(data => console.log(data));
+  
+
+  /*Class that inheritance the previous Class */
+
+  class ExtendedFetcher extends Fetcher {
+    constructor(baseURL, authToken) {
+      super(baseURL); // Call the parent class constructor
+      this.authToken = authToken; // Additional property for authentication
+    }
+  
+    async fetchWithAuth(endpoint) {
+      try {
+        const response = await fetch(`${this.baseURL}${endpoint}`, {
+          headers: {
+            Authorization: `Bearer ${this.authToken}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error fetching data with auth:', error);
+      }
+    }
+  }
+  
+  // Example usage:
+  const secureFetcher = new ExtendedFetcher('https://api.example.com', 'your-auth-token');
+  secureFetcher.fetchWithAuth('/secure-data').then(data => console.log(data));
+  
+  /*
+  Explanation
+Base Class (Fetcher):
+
+Accepts a baseURL as a parameter.
+Has a fetchData method to fetch data from the provided endpoint.
+Derived Class (ExtendedFetcher):
+
+Inherits from Fetcher using extends.
+Adds an authToken property for authorization.
+Includes a new method, fetchWithAuth, to make authenticated requests.
+  
+  
+  
+  */
