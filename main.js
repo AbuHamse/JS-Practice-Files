@@ -55,6 +55,10 @@ throw new Error('Object doesnt implement the required Interface')
 
 function implement(object){
 
+if(typeof object !== 'object' || arguments.length === 0){
+throw new Error('Please enter a correct Argument')
+}
+
 //Loops through all the arguments passed in through the function(method)
 for(let i = 0; i < arguments.length; i++){
 
