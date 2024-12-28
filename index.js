@@ -189,5 +189,46 @@ Array.prototype.equals = function (array) {
 // Hide method from for-in loops
 Object.defineProperty(Array.prototype, "equals", {enumerable: false});
 
-
 */
+
+
+/*Simple POST request with Axios: */
+axios.post('https://jsonplaceholder.typicode.com/todos', {
+  userId: 11,
+  id: 201,
+  title: "Try Axios POST",
+  completed: true
+})
+.then(response => {
+  document.getElementById('output').innerHTML = `
+    <h2>Post Created:</h2>
+    <p>Title: ${response.data.title}</p>
+    <p>Completed status: ${response.data.completed}</p>
+  `;
+})
+.catch(error => {
+  console.error('Error:', error);
+  document.getElementById('output').innerHTML = '<p>Error creating post.</p>';
+});
+
+
+/*Simple POST request with Fetch(): */
+
+fetch('https://jsonplaceholder.typicode.com/todos', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ // Manually converting the object to JSON
+    userId: 11,
+    id: 202,
+    title: 'Try Fetch POST',
+    completed: true
+  })
+})
+.then(response => {
+  if (!response.ok) { // Manual error handling for HTTP errors
+    throw new Error('Error creating post');
+  }
+  return response.json(); // Manually parsing the response to JSON
+});
