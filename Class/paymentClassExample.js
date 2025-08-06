@@ -73,3 +73,4 @@ cryptoService.pay(200);
 Logger.log("All payments processed successfully.");
 
 console.log("=== Done ===");
+g

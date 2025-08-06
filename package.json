@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node server",
     "nodemon": "nodemon server --watch",
-    "test":"jest"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +17,6 @@
   "devDependencies": {
     "@types/config": "^3.3.5",
     "jest": "^29.7.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.9.2"
   }
 }
